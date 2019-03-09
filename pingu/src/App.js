@@ -4,11 +4,13 @@ import { Router, Route, browserHistory, Redirect } from 'react-router'
 import Home from './components/Home'
 import Login from './components/Login'
 import Onboard from './components/Onboard'
+import App from './components/App'
 export const routes = (
   <Route>
     <Route path="/" component={ Home } />
     <Route path="/login" component={ Login } />
     <Route path="/onboard" component={ Onboard } />
+    <Route path="/app" component={ App }/>
   </Route>
 );
 /*class App extends Component {

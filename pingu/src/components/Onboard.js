@@ -11,7 +11,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
 import {Column} from 'simple-flexbox'
-
+import Button from '@material-ui/core/Button'
 class onboard extends Component{
     constructor(){
         super()
@@ -69,6 +69,9 @@ class onboard extends Component{
       </form>  
       </CardContent>
       <CardActions>
+      <Button style={{height:'50%', marginLeft:'20%', marginRight:'20%', background: 'linear-gradient(to right bottom, #00e676, #5df2d6)', borderRadius:'25px', marginBottom:'3%', width:'150%'}}>
+                <h3 style={{color:'#fff', margin:'0px'}}>Lets Go!</h3>
+            </Button>
       </CardActions>
      </Card>
   </div>
