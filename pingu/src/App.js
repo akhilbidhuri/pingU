@@ -1,16 +1,24 @@
 import React, { Component } from 'react';
 import { Router, Route, browserHistory, Redirect } from 'react-router'
-//import { redirectToLogin } from './Utility/Auth'
 import Home from './components/Home'
 import Login from './components/Login'
 import Onboard from './components/Onboard'
 import App from './components/App'
+import Dashboard from './components/dashboard'
+import Create from './components/create'
+import Adduser from './components/adduser'
+import Chat from './components/chat'
 export const routes = (
   <Route>
     <Route path="/" component={ Home } />
     <Route path="/login" component={ Login } />
     <Route path="/onboard" component={ Onboard } />
-    <Route path="/app" component={ App }/>
+    <Route component={ App } >
+      <Route path="/dashboard" component={ Dashboard } />
+      <Route path="/create" component={ Create }/>
+      <Route path="/adduser" component={Adduser}/>
+      <Route path="/chat" component={Chat}/>
+    </Route>
   </Route>
 );
 /*class App extends Component {
@@ -37,6 +45,6 @@ export const routes = (
 }*/
 const Root = () => (
   <Router history={ browserHistory } routes={ routes } />
-  )
+)
 
 export default Root;

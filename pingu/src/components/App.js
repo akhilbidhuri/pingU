@@ -10,15 +10,26 @@ import '../App.css'
 import Dashboard from './dashboard'
 import {Row} from 'simple-flexbox'
 import { Group } from '@material-ui/icons';
-
+import {Timeline} from '@material-ui/icons'
+import {Add} from '@material-ui/icons'
+import {GroupAdd} from '@material-ui/icons'
+import { Link, withRouter } from 'react-router'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemText from '@material-ui/core/ListItemText'
 class app extends Component{
     constructor(){
         super()
         this.state={
-            teams:[]
+            teams:[], 
+            teamsview: false
         }
+        this.toggleteams = this.toggleteams.bind(this)
     }
-
+    toggleteams(){
+        this.setState({teamsview: !this.state.teamsview})
+    }
     render(){
         return (
             <div>
@@ -31,9 +42,9 @@ class app extends Component{
                     }
                     `}
                 </style>
-                <AppBar position="static" style={{ background:"#8e24aa" }}>
+                <AppBar position="static" style={{position:'fixed', background:"#8e24aa" }}>
                  <Toolbar>
-                 <Typography variant="h4" color="inherit" noWrap className="logo" style={{ fontWeight:'500' }}>
+                 <Typography variant="h4" color="inherit" noWrap className="logo" style={{ fontWeight:'800' }}>
                     <span style={{ color: '#43b8ff' }}>pin</span><span style={{color:'#ff6043'}}>gU</span>
                  </Typography>
                  <div style={{flexGrow: '1'}}></div>
@@ -52,13 +63,46 @@ class app extends Component{
                  </Toolbar>
                 </AppBar>
                 <Row>
-                <div style={{minHeight:'100vh', width:'13%', background:'#8e24aa', borderTop:'2px solid #6a1b9a'}}>
-                <Typography variant="h6" noWrap className="listcontents" style={{ fontWeight:'540', color:'#fff', textAlign:'center',marginRight:'20%', marginLeft:'20%', borderRadius:'10px' }}>
+                <div style={{position:'fixed', minHeight:'100vh', width:'17%', background:'#8e24aa', borderTop:'2px solid #6a1b9a', boxShadow:'8px 0 5px -5px #aaa', marginTop:'60px'}}>
+                <div style={{paddingTop:'20px'}}>
+                </div>
+                <Typography onClick={this.toggleteams} variant="p" noWrap className="listcontents" style={{ marginBottom:'30px', fontWeight:'540', color:'#fff', textAlign:'center',marginRight:'20%', marginLeft:'20%', borderRadius:'10px' }}>
                     <Group style={{color:'#fff', marginTop:'1%'}}/>Teams
+                    {this.state.teamsview &&
+                    <List component="div" disablePadding>
+                        {
+                        this.state.teams.map(item=>
+                        <ListItem button >
+                        <ListItemIcon>
+                        </ListItemIcon>
+                        <ListItemText inset primary="Starred" />
+                        </ListItem>)
+                        }
+                    </List>}
                 </Typography>
+                <Link to={"/dashboard"} style={{ textDecoration: 'none'}}>
+                <Typography variant="p" noWrap className="listcontents" style={{ marginBottom:'30px', fontWeight:'540', color:'#fff', textAlign:'center',marginRight:'20%', marginLeft:'20%', borderRadius:'10px' }}>
+                    <Timeline style={{color:'#fff', marginTop:'1%'}}/>Dashboard
+                </Typography>
+                </Link>
+                <Link to={"/create"} style={{ textDecoration: 'none'}}>
+                <Typography variant="p" noWrap className="listcontents" style={{marginBottom:'30px', fontWeight:'540', color:'#fff', textAlign:'center',marginRight:'20%', marginLeft:'20%', borderRadius:'10px' }}>
+                    <GroupAdd style={{color:'#fff', marginTop:'1%'}}/>Create Team
+                </Typography>
+                </Link>
+                <Link to={"/adduser"} style={{ textDecoration: 'none'}}>
+                <Typography variant="p" noWrap className="listcontents" style={{marginBottom:'30px', fontWeight:'540', color:'#fff', textAlign:'center',marginRight:'20%', marginLeft:'20%', borderRadius:'10px' }}>
+                    <Add style={{color:'#fff', marginTop:'1%'}}/>Add User
+                </Typography>
+                </Link>
                 </div>
                 {
-                    <Dashboard/>
+                    <div style={{marginLeft:'23%', marginTop:'5%'}}>
+                        {
+                            this.props.children
+                        }
+                    </div>
+                    
                 }
                 </Row>
             </div>

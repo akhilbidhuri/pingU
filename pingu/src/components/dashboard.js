@@ -4,14 +4,24 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import { Row, Column} from 'simple-flexbox'
 import '../App.css'
-import { Item } from 'semantic-ui-react';
-
+import Charts from './charts'
+ 
 const stats = [
-    {name:'Total messages'},{name:'Total Members'},{name:'Active users'}
+    {name:'Total messages', num: 0},{name:'Total Members', num:0},{name:'Active users', num:0}
 ]
 
 class dashboard extends Component{
-
+    constructor(){
+        super()
+        this.state={
+            numbers: [0, 0, 0]
+        }
+    }
+    componentDidMount(){
+        for(let i =0;i<stats.length;i++){
+            stats[i].num = this.state.numbers[i];
+        }       
+    }
     render(){
         return (
             <div>
@@ -20,16 +30,19 @@ class dashboard extends Component{
                 }
                 <Row horizontal="center">    
                 {stats.map((item, i)=>
-                <Card key={i} style={{margin:'2%', borderRadius:'8px'}} raised="true">
-                    <CardMedia width="200px" height="200px"/>
+                <Card key={i} style={{margin:'2%', borderRadius:'8px', width:'300px', height:'160px'}} raised="true">
                     <CardContent>
                         <Column horizontal="center">
-                            <h3 className="logo">{item.name}</h3>
+                        <div style={{width:'250px', height:'100px', background:'#eee', borderRadius:'8px'}}>
+                            <h1 style={{fontSize:'400%', textAlign:'center', marginTop:'10%'}}>{item.num}</h1>
+                        </div>
+                            <h4 className="logo" style={{marginTop:'20px'}}>{item.name}</h4>
                         </Column>
                     </CardContent>
                 </Card>   
                 )}
-                </Row>      
+                </Row>
+                <Charts/>
             </div>
         )
     }
