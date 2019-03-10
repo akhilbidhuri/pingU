@@ -7,17 +7,18 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Typography from '@material-ui/core/Typography';
 import '../App.css'
-import Dashboard from './dashboard'
 import {Row} from 'simple-flexbox'
 import { Group } from '@material-ui/icons';
 import {Timeline} from '@material-ui/icons'
 import {Add} from '@material-ui/icons'
 import {GroupAdd} from '@material-ui/icons'
-import { Link, withRouter } from 'react-router'
+import { Link, withRouter, browserHistory } from 'react-router'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
+import { connect } from "react-redux";
+
 class app extends Component{
     constructor(){
         super()
@@ -29,6 +30,12 @@ class app extends Component{
     }
     toggleteams(){
         this.setState({teamsview: !this.state.teamsview})
+    }
+    componentDidMount(){
+        if(this.props.data.length==0){
+            browserHistory.push('/login')
+        }
+        console.log("type of user:", this.props)
     }
     render(){
         return (
@@ -66,35 +73,41 @@ class app extends Component{
                 <div style={{position:'fixed', minHeight:'100vh', width:'17%', background:'#8e24aa', borderTop:'2px solid #6a1b9a', boxShadow:'8px 0 5px -5px #aaa', marginTop:'60px'}}>
                 <div style={{paddingTop:'20px'}}>
                 </div>
-                <Typography onClick={this.toggleteams} variant="p" noWrap className="listcontents" style={{ marginBottom:'30px', fontWeight:'540', color:'#fff', textAlign:'center',marginRight:'20%', marginLeft:'20%', borderRadius:'10px' }}>
+                <Typography onClick={this.toggleteams} variant="p" noWrap className="listcontents" style={{ marginBottom:'30px', fontWeight:'540', color:'#fff', textAlign:'center',marginRight:'20%', marginLeft:'20%', borderRadius:'10px', cursor:'pointer' }}>
                     <Group style={{color:'#fff', marginTop:'1%'}}/>Teams
                     {this.state.teamsview &&
                     <List component="div" disablePadding>
                         {
-                        this.state.teams.map(item=>
-                        <ListItem button >
+                        this.props.data.group.map(item=>
+                        <Link to={"/chat"} style={{ textDecoration: 'none'}}><ListItem button >
                         <ListItemIcon>
                         </ListItemIcon>
-                        <ListItemText inset primary="Starred" />
-                        </ListItem>)
+                        <ListItemText inset  primary={<Typography type="body2" style={{ color: '#FFFFFF' }}>{item.gname}</Typography>} />
+                        </ListItem></Link>)
                         }
                     </List>}
                 </Typography>
+                {this.props.data.type=="manager"&&
                 <Link to={"/dashboard"} style={{ textDecoration: 'none'}}>
                 <Typography variant="p" noWrap className="listcontents" style={{ marginBottom:'30px', fontWeight:'540', color:'#fff', textAlign:'center',marginRight:'20%', marginLeft:'20%', borderRadius:'10px' }}>
                     <Timeline style={{color:'#fff', marginTop:'1%'}}/>Dashboard
                 </Typography>
                 </Link>
+                }
+                {this.props.data.type=="manager"&&
                 <Link to={"/create"} style={{ textDecoration: 'none'}}>
                 <Typography variant="p" noWrap className="listcontents" style={{marginBottom:'30px', fontWeight:'540', color:'#fff', textAlign:'center',marginRight:'20%', marginLeft:'20%', borderRadius:'10px' }}>
                     <GroupAdd style={{color:'#fff', marginTop:'1%'}}/>Create Team
                 </Typography>
                 </Link>
+                }
+                {this.props.data.type=="hr"&&
                 <Link to={"/adduser"} style={{ textDecoration: 'none'}}>
                 <Typography variant="p" noWrap className="listcontents" style={{marginBottom:'30px', fontWeight:'540', color:'#fff', textAlign:'center',marginRight:'20%', marginLeft:'20%', borderRadius:'10px' }}>
                     <Add style={{color:'#fff', marginTop:'1%'}}/>Add User
                 </Typography>
                 </Link>
+                }
                 </div>
                 {
                     <div style={{marginLeft:'23%', marginTop:'5%'}}>
@@ -109,5 +122,7 @@ class app extends Component{
         )
     }
 }
-
-export default app;
+const mapStateToProps = state => ({
+    ...state
+  });
+export default connect(mapStateToProps)(app);

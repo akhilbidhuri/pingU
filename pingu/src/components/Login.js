@@ -26,14 +26,24 @@ class login extends Component{
 
      _login =() =>{
         console.log("yaha aa gaya")
-        let r= null
         let email = document.getElementById('email').value
         let pass = document.getElementById('password').value
         console.log(email, pass)
         axios.post('http://172.16.20.100:4000/login', {email:email, password:pass})
         .then((res)=>{
-            console.log("result:",res)
-            r = res
+            if(res.status !== "Password or email mismatch"){
+            console.log("result:",res.data)
+            this.props.action(res.data)
+            if(res.data.type==="hr"){
+                browserHistory.push('/adduser')
+            }
+            else if(res.data.type==="manager"){
+                browserHistory.push('/dashboard')
+            }
+            else{
+                browserHistory.push('/chat')
+            }}
+            
         }).catch(err=>{console.log(err)})
     }
 
