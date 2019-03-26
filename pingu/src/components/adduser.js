@@ -18,7 +18,7 @@ class adduser extends Component{
         let pass = document.getElementById('password').value
         let role = document.getElementById('role').value
         let type = document.getElementById('type').value
-        axios.post('http://172.16.20.100:4000/reguser', {company:comp, email:email, password:pass, role:role, type:type})
+        axios.post('http://192.168.43.78:4000/reguser', {company:comp, email:email, password:pass, role:role, type:type})
         .then(res=>{console.log(res)})
         .catch(err=>console.log(err))
     }

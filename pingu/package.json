@@ -9,6 +9,7 @@
     "axios": "^0.18.0",
     "flexbox-react": "^4.4.0",
     "material-ui": "^0.20.2",
+    "qs": "^6.7.0",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-redux": "^6.0.1",

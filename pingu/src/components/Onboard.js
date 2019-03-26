@@ -31,7 +31,7 @@ class onboard extends Component{
         let pass =  document.getElementById('password').value
         let company = document.getElementById('company').value
         let name = document.getElementById('name').value
-        axios.post('http://172.16.20.100:4000/regcomp',  {email:email, password:pass, compname:company, name:name})
+        axios.post('http://192.168.43.78:4000/regcomp',  {email:email, password:pass, compname:company, name:name})
         .then(res=>{
             console.log(res.data)
             r = res.data

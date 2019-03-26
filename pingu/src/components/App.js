@@ -35,7 +35,7 @@ class app extends Component{
         if(this.props.data.length==0){
             browserHistory.push('/login')
         }
-        console.log("type of user:", this.props)
+        console.log("type of user:", this.props.data)
     }
     render(){
         return (

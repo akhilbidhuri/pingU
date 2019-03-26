@@ -22,7 +22,7 @@ class create extends Component{
     handleChange(event){
         console.log("badhiya")
         this.setState({ [event.target.name]: event.target.value });
-        axios.post('http://172.16.20.100:4000/team', {role:String(event.target.value), company: this.props.data.company})
+        axios.post('http://192.168.43.78:4000/team', {role:String(event.target.value), company: this.props.data.company})
         .then(res=>{
             this.setState({users:[...this.state.users,...res.data]})
         }).catch(err=>console.log(err))
@@ -31,7 +31,7 @@ class create extends Component{
     addgroup(user){
         console.log(user)
         let team = document.getElementById('team').value;
-        axios.post('http://172.16.20.100:4000/addgroup', {gname:team, uid:this.props.data._id, gid: team })
+        axios.post('http://192.168.43.78:4000/addgroup', {gname:team, uid:this.props.data._id, gid: team })
         .then(res=>{this.setState({users:this.state.users.splice(this.state.users.indexOf(user), 1)});console.log(res)})
         .catch(err=>console.log(err))
     }

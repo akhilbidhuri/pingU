@@ -1,15 +1,31 @@
 import React, {Component} from 'react';
 import Card from '@material-ui/core/Card';
-import CardMedia from '@material-ui/core/CardMedia';
 import CanvasJSReact from './canvasjs-2.3.1/canvasjs.react';
 import CardContent  from '@material-ui/core/CardContent';
-import {Row} from 'simple-flexbox'
-var CanvasJS = CanvasJSReact.CanvasJS;
+import {Row, Column} from 'simple-flexbox'
+import axios from 'axios'
+import qs from 'qs'
+import Chip from '@material-ui/core/Chip';
+import Avatar from '@material-ui/core/Avatar';
+
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
+
 class Charts extends Component{
     constructor(){
         super()
-        this.state={}
+        this.state={
+            fwords:[]
+        }
+    }
+    componentDidMount(){
+        console.log(this.props)
+        axios.post('http://192.168.43.78:5000/count', qs.stringify({gid:this.props.gid, company:this.props.company}),{headers:{'Content-Type' : 'application/x-www-form-urlencoded'}})
+        .then((res)=>{
+            console.log("res:", res)
+            this.setState({fwords:res.data.words})
+        }).catch(
+            err=> console.log(err)
+        )
     }
     render(){
         const options = {
@@ -55,7 +71,18 @@ class Charts extends Component{
                 </Card>
                 <Card raised="true" style={{width:'100%', marginRight:'2%', marginLeft:'3%', borderRadius:'8px', height:'350px'}}>
                 <CardContent>
+
                 <h1 style={{textAlign:'center'}}>Frequent Words</h1>
+                {
+                    this.state.fwords.map(i=>(
+                        <Chip
+                        avatar={<Avatar style={{backgroundColor:"#7b1fa2", color:'#fff'}}>{i[0]}</Avatar>}
+                        style={{marginTop:'16px', backgroundColor:'#d500f9', color:'#fff', fontSize:'150%'}}
+                         key={i[1]}
+                         label={i[1]}
+                         />
+                    ))
+                }
                 </CardContent>
                 </Card>
                 </Row>
@@ -63,5 +90,4 @@ class Charts extends Component{
         )
     }
 }
-
 export default Charts;

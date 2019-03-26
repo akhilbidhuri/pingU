@@ -5,7 +5,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import { Row, Column} from 'simple-flexbox'
 import '../App.css'
 import Charts from './charts'
- 
+import {connect} from 'react-redux'
 const stats = [
     {name:'Total messages', num: 0},{name:'Total Members', num:0},{name:'Active users', num:0}
 ]
@@ -42,10 +42,12 @@ class dashboard extends Component{
                 </Card>   
                 )}
                 </Row>
-                <Charts/>
+                <Charts gid={this.props.data.group[0].gid} company={this.props.data.company}/>
             </div>
         )
     }
 }
-
-export default dashboard;
+const mapStateToProps = state => ({
+    ...state
+  });
+export default connect(mapStateToProps)(dashboard);

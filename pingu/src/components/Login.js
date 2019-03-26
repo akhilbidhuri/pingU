@@ -29,7 +29,7 @@ class login extends Component{
         let email = document.getElementById('email').value
         let pass = document.getElementById('password').value
         console.log(email, pass)
-        axios.post('http://172.16.20.100:4000/login', {email:email, password:pass})
+        axios.post('http://192.168.43.78:4000/login', {email:email, password:pass})
         .then((res)=>{
             if(res.status !== "Password or email mismatch"){
             console.log("result:",res.data)
@@ -43,7 +43,7 @@ class login extends Component{
             else{
                 browserHistory.push('/chat')
             }}
-            
+
         }).catch(err=>{console.log(err)})
     }
 
