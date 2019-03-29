@@ -6,20 +6,39 @@ import {Column} from 'simple-flexbox'
 import Button from '@material-ui/core/Button'
 import { connect } from 'react-redux';
 import axios from 'axios'
-
+import Error from '@material-ui/icons/Error'
+import Chip from '@material-ui/core/Chip'
+import Avatar from '@material-ui/core/Avatar'
+import config from './config'
 class adduser extends Component{
     constructor(){
         super()
+        this.state={
+            empty: false,
+            added: false
+        }
+        this.adduser = this.adduser.bind(this)
     }
 
     adduser(){
-        let comp = document.getElementById('company').value
+        console.log("aa gaya")
+        let name = document.getElementById('name').value
         let email = document.getElementById('email').value
         let pass = document.getElementById('password').value
         let role = document.getElementById('role').value
         let type = document.getElementById('type').value
-        axios.post('http://192.168.43.78:4000/reguser', {company:comp, email:email, password:pass, role:role, type:type})
-        .then(res=>{console.log(res)})
+        if (name=='' || email=='' ||pass=='' ||role=='' ||type==''){
+                this.setState({empty:true})
+                return
+        }
+        axios.post(config.base+'/reguser', {name: name, company:this.props.data.company, email:email, password:pass, role:role, type:type})
+        .then(res=>{console.log(res);this.setState({added:true});
+        document.getElementById('name').reset();
+        document.getElementById('email').reset();
+        document.getElementById('password').reset();
+        document.getElementById('role').reset();
+        document.getElementById('type').reset();
+    })
         .catch(err=>console.log(err))
     }
 
@@ -31,12 +50,13 @@ class adduser extends Component{
                     <h1>Add User</h1>
                     <Column horizontal="center">
             <TextField
-            id = "company"
+            id = "name"
             label ="Name"
             type="text"
             margin="normal"
-            variant="outlined"
             name="name"
+            variant="outlined"
+            required
             />
             <TextField
             id="email"
@@ -46,6 +66,7 @@ class adduser extends Component{
             autoComplete="email"
             margin="normal"
             variant="outlined"
+            required
             />
             <TextField
             id="password"
@@ -55,6 +76,7 @@ class adduser extends Component{
             autoComplete="current-password"
             margin="normal"
             variant="outlined"
+            required
             />
             <TextField
             id = "role"
@@ -63,6 +85,7 @@ class adduser extends Component{
             margin="normal"
             variant="outlined"
             name="role"
+            required
             />
             <TextField
             id = "type"
@@ -71,11 +94,44 @@ class adduser extends Component{
             margin="normal"
             variant="outlined"
             name="type"
+            required
             />
-            <Button onClick={this.addUser} style={{background:'#00c853', color:'#fff', fontSize:'130%', fontWeight:'480', width:'40%', height:'20%'}}>
+            <Button onClick={this.adduser} style={{background:'#00c853', color:'#fff', fontSize:'130%', fontWeight:'480', width:'40%', height:'20%'}}>
                 Add
             </Button>            
-            </Column>
+            {this.state.empty &&
+            <Chip
+             style={{marginTop:'2%'}}
+              avatar={
+            <Avatar>
+            <Error />
+            </Avatar>
+            }
+            label="Enter all Fields"
+            onDelete={()=>{
+                this.setState({empty:false})
+            }}
+            color="secondary"
+            />
+
+        }
+        {this.state.added &&
+            <Chip
+             style={{marginTop:'2%', backgroundColor:'#34ef45', color:'#fff'}}
+              avatar={
+            <Avatar>
+            <Error />
+            </Avatar>
+            }
+            label="Employee Added"
+            onDelete={()=>{
+                this.setState({added:false})
+            }}
+            />
+
+        } 
+        </Column>
+
                 </CardContent>
                 </Card>
             </div>

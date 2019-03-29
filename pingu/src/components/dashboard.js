@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import { Row, Column} from 'simple-flexbox'
 import '../App.css'
 import Charts from './charts'
@@ -42,7 +41,8 @@ class dashboard extends Component{
                 </Card>   
                 )}
                 </Row>
-                <Charts gid={this.props.data.group[0].gid} company={this.props.data.company}/>
+                {this.props.data.group !== undefined &&
+                <Charts gid={this.props.data.group[0].gid} company={this.props.data.company}/>}
             </div>
         )
     }

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Column, Row } from 'simple-flexbox';
 import '../App.css';
 import Button from '@material-ui/core/Button';
-import { Link, withRouter } from 'react-router'
+import { Link } from 'react-router'
 const home = () => {
 let wi =    window.innerWidth;
 return <div style={{
@@ -14,7 +13,7 @@ return <div style={{
         }`}
     </style>
     {window.innerWidth>1000 &&
-    <img alt="chat" style={{marginLeft:'25%', marginRight:'18%'}} src="https://media.giphy.com/media/26FPJGjhefSJuaRhu/giphy.gif"/>}
+    <img alt="chat" style={{marginLeft:'34%', marginRight:'18%' }} src="https://media.giphy.com/media/26FPJGjhefSJuaRhu/giphy.gif"/>}
         {window.innerWidth<1000 &&
     <img alt="chat" style={{width:window.innerWidth, height:window.innerHeight}} src="https://media.giphy.com/media/26FPJGjhefSJuaRhu/giphy.gif"/>}
     <h1 style={{fontSize:'750%', marginTop:'-10%', marginLeft:'38%'}} className="logo"><span style={{color:'#43b8ff'}}>pin</span><span style={{color:'#ff6043'}}>gU</span></h1>

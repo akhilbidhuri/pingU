@@ -18,26 +18,44 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import { connect } from "react-redux";
-
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import action  from '../action';
 class app extends Component{
     constructor(){
         super()
         this.state={
+            anchorEl: null,
             teams:[], 
             teamsview: false
         }
         this.toggleteams = this.toggleteams.bind(this)
+        this._logout = this._logout.bind(this)
+        this.notlogged = this.notlogged.bind(this)
+    }
+    _logout(){
+        this.props.action(undefined)
+        console.log("after logout",this.props.data)
+        this.notlogged()
     }
     toggleteams(){
         this.setState({teamsview: !this.state.teamsview})
     }
-    componentDidMount(){
+    notlogged(){
         if(this.props.data.length==0){
             browserHistory.push('/login')
         }
-        console.log("type of user:", this.props.data)
+        console.log("type of user:", this.props.data)        
     }
+    componentDidMount(){
+        this.notlogged()
+    }
+    handleClick = event => {
+        this.setState({ anchorEl: event.currentTarget });
+      };
     render(){
+        const { anchorEl } = this.state;
+        const open = Boolean(anchorEl);
         return (
             <div>
                 <style>{
@@ -64,9 +82,25 @@ class app extends Component{
                     aria-haspopup="true"
                     color="inherit"
                     style={{marginRight:'2%'}}
+                    onClick={this.handleClick}
                 >
                     <AccountCircle style={{color:"#fff"}}/>
                 </IconButton>
+                <Menu
+          id="long-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={this.handleClose}
+          PaperProps={{
+            style: {
+              width: 200,
+            },
+          }}
+        >
+            <MenuItem onClick={this._logout}>
+              Logout
+            </MenuItem>
+        </Menu>
                  </Toolbar>
                 </AppBar>
                 <Row>
@@ -125,4 +159,7 @@ class app extends Component{
 const mapStateToProps = state => ({
     ...state
   });
-export default connect(mapStateToProps)(app);
+  const mapDispatchToProps = dispatch => ({
+    action: (payload) => dispatch(action(payload))
+  });
+export default connect(mapStateToProps, mapDispatchToProps)(app);

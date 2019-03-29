@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
-import { Link, withRouter } from 'react-router';
 import '../App.css';
-import Grid from '@material-ui/core/Grid';
 import { browserHistory } from 'react-router'
 import IconButton from '@material-ui/core/IconButton';
-import Icon from '@material-ui/core/Icon';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -13,14 +10,16 @@ import TextField from '@material-ui/core/TextField';
 import {Column} from 'simple-flexbox'
 import Button from '@material-ui/core/Button'
 import axios from 'axios'
-import Snackbar from '@material-ui/core/Snackbar';
-import SnackbarContent from '@material-ui/core/SnackbarContent';
-
+import Chip from '@material-ui/core/Chip'
+import Avatar from '@material-ui/core/Avatar'
+import Error from '@material-ui/icons/Error'
+import config from './config'
 class onboard extends Component{
     constructor(){
         super()
         this.state = {
-            isdone: false
+            isdone: false,
+            empty: false
         }
         this._onboard = this._onboard.bind(this)
     }
@@ -31,11 +30,17 @@ class onboard extends Component{
         let pass =  document.getElementById('password').value
         let company = document.getElementById('company').value
         let name = document.getElementById('name').value
-        axios.post('http://192.168.43.78:4000/regcomp',  {email:email, password:pass, compname:company, name:name})
+        if(email==''||pass==''||company==''||name==''){
+          this.setState({empty:true})
+          return
+        }
+        axios.post(config.base+'/regcomp',  {email:email, password:pass, compname:company, name:name})
         .then(res=>{
+          if(res.data.status!=='fail'){
             console.log(res.data)
             r = res.data
-            this.setState({isdone:true})
+            this.setState({isdone:true})}
+
         }).catch(err=>console.log(err))
     }
 
@@ -91,6 +96,22 @@ class onboard extends Component{
       <Button onClick={this._onboard} style={{height:'50%', marginLeft:'20%', marginRight:'20%', background: 'linear-gradient(to right bottom, #00e676, #5df2d6)', borderRadius:'25px', marginBottom:'3%', width:'150%'}}>
                 <h3 style={{color:'#fff', margin:'0px'}}>Lets Go!</h3>
             </Button>}
+            {
+                this.state.empty &&
+                <Chip
+                style={{marginTop:'2%'}}
+                avatar={
+              <Avatar>
+              <Error />
+              </Avatar>
+              }
+              label="Enter all Fields"
+              onDelete={()=>{
+                  this.setState({empty:false})
+              }}
+              color="secondary"
+                />
+            }
         {this.state.isdone &&
         <h3
         style={{color:'#fff', background:'#34ef45', paddingRight:'3%', paddingLeft:'3%'}}

@@ -10,28 +10,30 @@ import {Add} from '@material-ui/icons';
 import Button from '@material-ui/core/Button'
 import {connect} from 'react-redux'
 import TextField from '@material-ui/core/TextField'
+import config from './config'
+import Check from '@material-ui/icons/Check'
 class create extends Component{
     constructor(){
         super()
         this.state={
             users:[],
-            role:''
+            role:'',
         }
         this.handleChange = this.handleChange.bind(this)
     }
     handleChange(event){
         console.log("badhiya")
         this.setState({ [event.target.name]: event.target.value });
-        axios.post('http://192.168.43.78:4000/team', {role:String(event.target.value), company: this.props.data.company})
+        axios.post(config.base+'/team', {role:String(event.target.value), company: this.props.data.company})
         .then(res=>{
-            this.setState({users:[...this.state.users,...res.data]})
+            this.setState({users:[...res.data]})
         }).catch(err=>console.log(err))
     }
 
     addgroup(user){
         console.log(user)
         let team = document.getElementById('team').value;
-        axios.post('http://192.168.43.78:4000/addgroup', {gname:team, uid:this.props.data._id, gid: team })
+        axios.post(config.base+'/addgroup', {gname:team, uid:user._id, gid: team })
         .then(res=>{this.setState({users:this.state.users.splice(this.state.users.indexOf(user), 1)});console.log(res)})
         .catch(err=>console.log(err))
     }

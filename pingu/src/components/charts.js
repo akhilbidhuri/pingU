@@ -2,12 +2,12 @@ import React, {Component} from 'react';
 import Card from '@material-ui/core/Card';
 import CanvasJSReact from './canvasjs-2.3.1/canvasjs.react';
 import CardContent  from '@material-ui/core/CardContent';
-import {Row, Column} from 'simple-flexbox'
+import {Row} from 'simple-flexbox'
 import axios from 'axios'
 import qs from 'qs'
 import Chip from '@material-ui/core/Chip';
 import Avatar from '@material-ui/core/Avatar';
-
+import config from './config'
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 class Charts extends Component{
@@ -19,7 +19,7 @@ class Charts extends Component{
     }
     componentDidMount(){
         console.log(this.props)
-        axios.post('http://192.168.43.78:5000/count', qs.stringify({gid:this.props.gid, company:this.props.company}),{headers:{'Content-Type' : 'application/x-www-form-urlencoded'}})
+        axios.post(config.ml+'/count', qs.stringify({gid:this.props.gid, company:this.props.company}),{headers:{'Content-Type' : 'application/x-www-form-urlencoded'}})
         .then((res)=>{
             console.log("res:", res)
             this.setState({fwords:res.data.words})
@@ -73,7 +73,7 @@ class Charts extends Component{
                 <CardContent>
 
                 <h1 style={{textAlign:'center'}}>Frequent Words</h1>
-                {
+                {this.state.fwords != undefined &&
                     this.state.fwords.map(i=>(
                         <Chip
                         avatar={<Avatar style={{backgroundColor:"#7b1fa2", color:'#fff'}}>{i[0]}</Avatar>}

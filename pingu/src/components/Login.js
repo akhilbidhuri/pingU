@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
-import { Link, withRouter } from 'react-router';
 import '../App.css';
-import Grid from '@material-ui/core/Grid';
 import { browserHistory } from 'react-router'
 import IconButton from '@material-ui/core/IconButton';
-import Icon from '@material-ui/core/Icon';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -15,12 +12,17 @@ import Button from '@material-ui/core/Button'
 import action  from '../action'
 import { connect } from "react-redux";
 import axios from 'axios'
+import Chip from '@material-ui/core/Chip'
+import Avatar from '@material-ui/core/Avatar'
+import Error from '@material-ui/icons/Error'
+import config from './config'
 class login extends Component{
     constructor(){
         super()
         this.state = {
             email:'',
-            password:''
+            password:'',
+            empty: false
         }
     }
 
@@ -28,16 +30,20 @@ class login extends Component{
         console.log("yaha aa gaya")
         let email = document.getElementById('email').value
         let pass = document.getElementById('password').value
+        if(email=='' || pass==''){
+            this.setState({empty:true})
+            return
+        }
         console.log(email, pass)
-        axios.post('http://192.168.43.78:4000/login', {email:email, password:pass})
+        axios.post(config.base+'/login', {email:email, password:pass})
         .then((res)=>{
-            if(res.status !== "Password or email mismatch"){
+            if(res.data.status !== "fail"){
             console.log("result:",res.data)
-            this.props.action(res.data)
-            if(res.data.type==="hr"){
+            this.props.action(res.data.results)
+            if(res.data.results.type==="hr"){
                 browserHistory.push('/adduser')
             }
-            else if(res.data.type==="manager"){
+            else if(res.data.results.type==="manager"){
                 browserHistory.push('/dashboard')
             }
             else{
@@ -81,6 +87,22 @@ class login extends Component{
             <Button onClick={this._login} style={{height:'50%', marginLeft:'20%', marginRight:'20%', background: 'linear-gradient(to right bottom, #00e676, #5df2d6)', borderRadius:'25px', marginBottom:'3%', width:'150%'}} >
                 <h3 style={{color:'#fff', margin:'0px'}}>Lets Go!</h3 >
             </Button>
+            {
+                this.state.empty &&
+                <Chip
+                style={{marginTop:'2%'}}
+                avatar={
+              <Avatar>
+              <Error />
+              </Avatar>
+              }
+              label="Enter all Fields"
+              onDelete={()=>{
+                  this.setState({empty:false})
+              }}
+              color="secondary"
+                />
+            }
         </CardActions>
        </Card>
     </div>
