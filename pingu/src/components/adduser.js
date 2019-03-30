@@ -33,11 +33,11 @@ class adduser extends Component{
         }
         axios.post(config.base+'/reguser', {name: name, company:this.props.data.company, email:email, password:pass, role:role, type:type})
         .then(res=>{console.log(res);this.setState({added:true});
-        document.getElementById('name').reset();
+        /*document.getElementById('name').reset();
         document.getElementById('email').reset();
         document.getElementById('password').reset();
         document.getElementById('role').reset();
-        document.getElementById('type').reset();
+        document.getElementById('type').reset();*/
     })
         .catch(err=>console.log(err))
     }

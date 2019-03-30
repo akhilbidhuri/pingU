@@ -1,4 +1,4 @@
 export default {
-    base: 'http://localhost:4000',
-    ml: 'http://localhost:5000'
+    base: 'http://192.168.43.78:4000',
+    ml: 'http://192.168.43.78:5000'
 }

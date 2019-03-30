@@ -63,9 +63,9 @@ class chat extends Component{
         if(this.props.data.group.length>0){
         axios.post(config.base+'/group', {gid:this.props.data.group[0].gid, company:this.props.data.company}).
         then(res=>{
-            console.log(res)
+            console.log('messages',res)
             res.data.map(u=>{
-            var rr = { message:u.message , handle:u.from, time: u.time }
+            var rr = { message:u.message , handle:u.from, time: u.time, sentiment: u.sentiment }
             this.setState({messages:[...this.state.messages, rr]})
         })}).catch(err=>console.log(err))}
         this.state.socket.on("chat", message => {
@@ -82,12 +82,33 @@ class chat extends Component{
                 <CardContent style={{ minHeight:'57vh'}}>
                     {
                         this.state.messages.map(m =>
-                           <div style={{boxShadow:'0 0px 6px 1px  #ddd', borderRadius:'16px',marginBottom:'15px'}}> <h2 style={{padding:'20px'}}>{m.message}</h2>
+                           <div style={{boxShadow:'0 0px 6px 1px  #ddd', borderRadius:'16px',marginBottom:'15px'}}>
+                           {this.props.data.type!=='manager' &&
+                            <h2 style={{padding:'20px', color:'#2e7d32'}}>{m.message}</h2>
+                           }
+                           {this.props.data.type==='manager' && m.sentiment === 'Positive' &&
+                            <h2 style={{padding:'20px', color:'#2e7d32'}}>{m.message}</h2>
+                           }
+                            {this.props.data.type==='manager' && m.sentiment === 'Negative' &&
+                            <h2 style={{padding:'20px', color:'#c62828'}}>{m.message}</h2>
+                           }
+                           {this.props.data.type==='manager' && m.sentiment === 'Neutral' &&
+                            <h2 style={{padding:'20px', color:'#304ffe'}}>{m.message}</h2>
+                           }
                             <p style={{paddingLeft:'20px'}}>{m.handle}</p>
                             <span><h6 style={{paddingLeft:'20px', paddingBottom:'10px'}}>
                             {m.time.hrs}:{m.time.min}:{m.time.sec}
                             {'  '}
                             {m.time.date}/{m.time.month}/{m.time.year}
+                            
+                            
+                            {
+                                this.props.data.type==='manager' &&
+                                       <span style={{marginLeft:'80%'}}>
+                                        {m.sentiment}
+                                       </span>
+                                    
+                            }
                             </h6>
                             </span>
                             </div>

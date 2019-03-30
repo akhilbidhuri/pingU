@@ -18,7 +18,7 @@ class Charts extends Component{
         }
     }
     componentDidMount(){
-        console.log(this.props)
+        console.log("bidhuri khauf",this.props)
         axios.post(config.ml+'/count', qs.stringify({gid:this.props.gid, company:this.props.company}),{headers:{'Content-Type' : 'application/x-www-form-urlencoded'}})
         .then((res)=>{
             console.log("res:", res)
@@ -34,7 +34,7 @@ class Charts extends Component{
 				text: ""
 			},
 			subtitles: [{
-				text: "71% Positive",
+				text: (this.props.senti[0]/(this.props.senti[0]+this.props.senti[1]+this.props.senti[2]))*100+"% Positive",
 				verticalAlign: "center",
 				fontSize: 24,
 				dockInsidePlotArea: true
@@ -45,9 +45,9 @@ class Charts extends Component{
 				indexLabel: "{name}: {y}",
 				yValueFormatString: "#,###'%'",
 				dataPoints: [
-					{ name: "Positive", y: 35 },
-					{ name: "Negative", y: 17 },
-					{ name: "Neutral", y: 7 }
+					{ name: "Positive", y: (this.props.senti[0]/(this.props.senti[0]+this.props.senti[1]+this.props.senti[2]))*100 },
+					{ name: "Negative", y: (this.props.senti[1]/(this.props.senti[0]+this.props.senti[1]+this.props.senti[2]))*100 },
+					{ name: "Neutral", y: (this.props.senti[2]/(this.props.senti[0]+this.props.senti[1]+this.props.senti[2]))*100 }
 				]
 			}]
 		}

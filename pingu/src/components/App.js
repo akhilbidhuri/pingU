@@ -36,7 +36,7 @@ class app extends Component{
     _logout(){
         this.props.action(undefined)
         console.log("after logout",this.props.data)
-        this.notlogged()
+        browserHistory.push('/login')
     }
     toggleteams(){
         this.setState({teamsview: !this.state.teamsview})
@@ -74,7 +74,7 @@ class app extends Component{
                  </Typography>
                  <div style={{flexGrow: '1'}}></div>
                  <IconButton color="inherit">
-                    <Badge badgeContent={17} color="secondary">
+                    <Badge badgeContent={1} color="secondary">
                     <NotificationsIcon style={{color:"#fff"}}/>
                     </Badge>
                  </IconButton>
