@@ -16,6 +16,8 @@ class Charts extends Component{
         this.state={
             fwords:[]
         }
+        this.generateDataPoints = this.generateDataPoints.bind(this);
+
     }
     componentDidMount(){
         console.log("bidhuri khauf",this.props)
@@ -27,7 +29,33 @@ class Charts extends Component{
             err=> console.log(err)
         )
     }
+    generateDataPoints(noOfDps) {
+		var xVal = 1, yVal = 0;
+		var dps = [];
+		for(var i = 0; i < noOfDps; i++) {
+			yVal = yVal +  Math.round(5 + Math.random() *(10));
+			dps.push({x: xVal,y: yVal});	
+			xVal++;
+		}
+		return dps;
+	}
     render(){
+		const options1 = {
+			theme: "light2", // "light1", "dark1", "dark2"
+			animationEnabled: true,
+			zoomEnabled: true,
+			title: {
+				text: "Try Zooming and Panning"
+			},
+			axisY: {
+				includeZero: false
+			},
+			data: [{
+				type: "area",
+				dataPoints: this.generateDataPoints(500)
+			}]
+		}
+
         const options = {
 			animationEnabled: true,
 			title: {
@@ -67,6 +95,9 @@ class Charts extends Component{
                 <Card raised="true" style={{width:'100%', marginLeft:'2%', marginRight:'3%', borderRadius:'8px', height:'350px'}}>
                 <CardContent>
                 <h1 style={{textAlign:'center'}}>Messaging Counts</h1>
+                <CanvasJSChart options = {options1} 
+				/* onRef={ref => this.chart = ref} */
+			    />
                 </CardContent>
                 </Card>
                 <Card raised="true" style={{width:'100%', marginRight:'2%', marginLeft:'3%', borderRadius:'8px', height:'350px'}}>
