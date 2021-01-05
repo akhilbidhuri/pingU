@@ -6,7 +6,7 @@
     "@livechat/ui-kit": "^0.2.14",
     "@material-ui/core": "^3.9.2",
     "@material-ui/icons": "^3.0.2",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "flexbox-react": "^4.4.0",
     "material-ui": "^0.20.2",
     "qs": "^6.7.0",
